@@ -20,7 +20,7 @@ posts.get('/', allPosts);
 posts.post('/', requireAuth, createPost);
 posts.get('/:id/thumb', renderImage);
 posts.delete('/:id', requireAuth, removePost);
-posts.put('/:id', requireAuth, editPost);
+posts.put('/:id', editPost);
 posts.get('/:id', getPost);
 posts.post('/dummy', requireAuth, addDummyData);
 
