@@ -54,7 +54,10 @@ export const searchPosts = async (req: Request, res: APIJson) => {
         });
         if (!posts) {
             throw new Error('Post not found');
-        } else return res.json({ payload: { results: posts } });
+        } else
+            return res.json({
+                payload: { results: posts, count: posts.length },
+            });
     } catch (error: any) {
         res.status(400).json({
             error: error.message,
