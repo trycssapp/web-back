@@ -9,7 +9,6 @@ import prisma from '../../lib/prisma';
 import { editUser } from '../controllers/user/edit';
 import { getUser } from '../controllers/user/get';
 import { me } from '../controllers/user/me';
-import { updatePreferences } from '../controllers/user/me/preferences';
 
 user.get('/delete', async (req: any, res: any) => {
     await prisma.user.deleteMany();
@@ -18,8 +17,7 @@ user.get('/delete', async (req: any, res: any) => {
 user.get('/me', requireAuth, me);
 user.get('/:id', getUser);
 user.put('/:id', requireAuth, editUser);
-user.put('/me/preferences', requireAuth, updatePreferences);
-
+// user.put('/me/preferences', requireAuth, updatePreferences);
 user.put('/:id/role', requireAdmin, changeRole);
 
 export default user;

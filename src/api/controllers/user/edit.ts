@@ -13,6 +13,8 @@ export const editUser = async (req: Request, res: APIJson) => {
         });
         if (!user) {
             res.status(404).json({ error: 'User not found' });
+        } else if (user?.id !== req.user?.id) {
+            res.status(401).json({ error: 'true' });
         } else {
             const edited = await prisma.user.update({
                 where: {

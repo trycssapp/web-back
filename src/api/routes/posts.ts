@@ -3,6 +3,7 @@ import requireAuth from '../../lib/middleware/requireAuth';
 import prisma from '../../lib/prisma';
 import { addDummyData } from '../controllers/posts/addDummyData';
 import { renderImage } from '../controllers/posts/thumb/image';
+import { requireAdmin } from './../../lib/middleware/requireAdmin';
 
 const posts = Router();
 
@@ -20,8 +21,8 @@ posts.get('/', allPosts);
 posts.post('/', requireAuth, createPost);
 posts.get('/:id/thumb', renderImage);
 posts.delete('/:id', requireAuth, removePost);
-posts.put('/:id', editPost);
+posts.put('/:id', requireAuth, editPost);
 posts.get('/:id', getPost);
-posts.post('/dummy', requireAuth, addDummyData);
+posts.post('/dummy', requireAdmin, addDummyData);
 
 export default posts;
