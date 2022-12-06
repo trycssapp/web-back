@@ -36,6 +36,7 @@ export default function authStrategy() {
                 done: any
             ) => {
                 const data = profile;
+                console.log(data);
 
                 try {
                     const user = await prisma.user.findUnique({
@@ -47,7 +48,10 @@ export default function authStrategy() {
                     } else {
                         const newUser = await prisma.user.create({
                             data: {
-                                avatar: data.photos[0].value,
+                                avatar: data.photos[0].value.replace(
+                                    '_normal',
+                                    ''
+                                ),
                                 username: data.username,
                                 twitterId: String(data.id),
                             },
