@@ -52,6 +52,7 @@ export default function authStrategy() {
                                     '_normal',
                                     ''
                                 ),
+                                displayName: data.displayName,
                                 username: data.username,
                                 twitterId: String(data.id),
                             },

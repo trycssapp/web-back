@@ -70,7 +70,9 @@ model User {
     twitterId String? @unique
     discordId String? @unique
 
-    username    String
+    username    String @unique
+    displayName String @default("")
+
     avatar      String
     role        Role   @default(USER)
     preferences Json[] @default([])
