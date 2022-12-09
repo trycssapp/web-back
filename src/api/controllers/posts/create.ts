@@ -1,8 +1,13 @@
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
+import { renderImage } from './thumb/image';
 
-export const createPost = async (req: Request, res: APIJson) => {
+export const createPost = async (
+    req: Request,
+    res: APIJson,
+    next: NextFunction
+) => {
     const userId = req?.user?.id;
     const {
         title,
@@ -55,7 +60,13 @@ export const createPost = async (req: Request, res: APIJson) => {
             });
             if (!added) {
                 res.status(404).json({ error: 'Failed to add post' });
-            } else return res.json({ payload: { results: added } });
+            } else {
+                const resWithParams = Object.assign(req, {
+                    params: { id: added.id },
+                });
+                void (await renderImage(resWithParams, res, next));
+                return res.json({ payload: { results: added } });
+            }
         }
     } catch (error: any) {
         console.log(error.message);
