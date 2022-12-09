@@ -3,14 +3,14 @@ import prisma from '../../../../lib/prisma';
 import { APIJson } from '../../../../lib/types/types';
 
 export const searchPosts = async (req: Request, res: APIJson) => {
-    const { q, filter, category } = req.body as {
+    const { q, filter } = req.body as {
         q: string;
         filter: {
             animated?: boolean;
             theme?: 'light' | 'dark';
             library: string;
+            categories?: string[];
         };
-        category?: string;
     };
     try {
         const query = q
@@ -46,7 +46,7 @@ export const searchPosts = async (req: Request, res: APIJson) => {
                         equals: filter.theme,
                     },
                     category: {
-                        equals: category,
+                        in: filter.categories,
                     },
                 },
             },
