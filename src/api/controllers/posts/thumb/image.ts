@@ -1,13 +1,9 @@
-import { NextFunction, Request } from 'express';
+import { Request } from 'express';
 import puppeteer from 'puppeteer';
 import prisma from '../../../../lib/prisma';
 import { APIJson } from '../../../../lib/types/types';
 
-export const renderImage = async (
-    req: Request,
-    res: APIJson,
-    next: NextFunction
-) => {
+export const renderImage = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
     try {
@@ -17,7 +13,7 @@ export const renderImage = async (
             args: ['--no-sandbox', '--disabled-setupid-sandbox'],
         });
 
-        console.log(`loads post ${id}`);
+        console.log(`${req.user?.id} started rendering thumbnail for ${id}`);
         (async () => {
             const page = await (await browser).newPage();
             await page.goto(
@@ -41,8 +37,10 @@ export const renderImage = async (
                     },
                 });
                 if (updated) {
-                    next();
-                } else res.sendStatus(400);
+                    return res.json({
+                        payload: { results: updated },
+                    });
+                } else return res.json({ error: 'true' });
             }
 
             await page.close();

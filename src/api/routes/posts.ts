@@ -19,7 +19,7 @@ posts.get('/delete', async (req: any, res: any) => {
 });
 posts.get('/', allPosts);
 posts.post('/', requireAuth, createPost);
-posts.get('/:id/thumb', renderImage);
+posts.put('/:id/thumbnail', renderImage);
 posts.delete('/:id', requireAuth, removePost);
 posts.put('/:id', requireAuth, editPost);
 posts.get('/:id', getPost);
