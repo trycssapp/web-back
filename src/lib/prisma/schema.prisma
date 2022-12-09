@@ -33,7 +33,7 @@ model Post {
     author   User   @relation(fields: [authorId], references: [id])
     authorId String
 
-    categoryRelations Category? @relation(fields: [category], references: [value], onDelete: SetDefault)
+    categoryRelations Category? @relation(fields: [category], references: [value], onDelete: NoAction)
     category          String?   @default("Unknown")
 
     libraryRelations Library? @relation(fields: [library], references: [value], onDelete: SetDefault)

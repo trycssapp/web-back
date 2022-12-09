@@ -23,9 +23,6 @@ export interface APIResponse {
 export interface Category {
     label: string;
     value: string;
-    _count: {
-        linkedTemplates: number;
-    };
 }
 export declare module IUser {
     export type Roles = 'ADMIN' | 'USER' | 'MOD';

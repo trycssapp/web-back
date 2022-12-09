@@ -36,7 +36,6 @@ export default function authStrategy() {
                 done: any
             ) => {
                 const data = profile;
-                console.log(data);
 
                 try {
                     const user = await prisma.user.findUnique({
