@@ -10,6 +10,7 @@ export const renderImage = async (req: Request, res: APIJson) => {
         let browser = puppeteer.launch({
             headless: true,
             defaultViewport: null,
+
             args: ['--no-sandbox', '--disabled-setupid-sandbox'],
         });
 
@@ -22,7 +23,7 @@ export const renderImage = async (req: Request, res: APIJson) => {
                     waitUntil: 'networkidle0',
                 }
             );
-
+            // await page.setViewport({ width: 1920, height: 1080 });
             const image = await page.screenshot({ fullPage: true });
             const b64 = Buffer.from(image).toString('base64');
             const mimeType = 'image/png';
