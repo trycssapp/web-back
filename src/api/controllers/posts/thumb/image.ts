@@ -10,7 +10,7 @@ export const renderImage = async (req: Request, res: APIJson) => {
         let browser = puppeteer.launch({
             headless: true,
             defaultViewport: null,
-
+            executablePath: 'google-chrome-stable',
             args: ['--no-sandbox', '--disabled-setupid-sandbox'],
         });
 
