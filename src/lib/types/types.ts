@@ -15,6 +15,8 @@ export interface APIResponse {
         results: {
             [key: string]: any;
         };
+        query?: string;
+        distribution?: any;
         count?: number;
     };
     error?: string;

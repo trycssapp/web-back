@@ -52,11 +52,36 @@ export const searchPosts = async (req: Request, res: APIJson) => {
             },
             include: { author: true },
         });
+        const aggregation = await prisma.category.findMany({
+            include: {
+                _count: {
+                    select: {
+                        posts: {
+                            where: {
+                                library: {
+                                    contains: filter.library,
+                                    mode: 'insensitive',
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        });
         if (!posts) {
             throw new Error('Post not found');
         } else
             return res.json({
-                payload: { results: posts, count: posts.length },
+                payload: {
+                    results: posts,
+
+                    // query: q,
+                    distribution: aggregation.reduce(
+                        (a, v) => ({ ...a, [v.value]: v._count?.posts }),
+                        {}
+                    ),
+                    count: posts.length,
+                },
             });
     } catch (error: any) {
         res.status(400).json({

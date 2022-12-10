@@ -1,18 +1,16 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@prisma/client': ^4.2.1
+  '@prisma/client': ^4.3.0
   '@types/body-parser': ^1.19.2
   '@types/config': ^0.0.41
   '@types/cors': ^2.8.12
   '@types/dotenv': ^8.2.0
   '@types/express': ^4.17.13
   '@types/node': ^18.6.2
-  '@types/oauth': ^0.9.1
   '@types/passport': ^1.0.11
   '@types/passport-twitter': ^1.0.37
   chalk: ^4.1.1
-  chrome-aws-lambda: ^10.1.0
   config: ^3.3.7
   connect-redis: ^6.1.3
   cors: ^2.8.5
@@ -23,10 +21,9 @@ specifiers:
   express-session: ^1.17.3
   ioredis: ^5.2.4
   nodemon: ^2.0.19
-  oauth: ^0.10.0
   passport: ^0.6.0
   passport-twitter: ^1.0.4
-  prisma: ^4.2.1
+  prisma: ^4.3.0
   puppeteer: ^19.3.0
   request: ^2.88.2
   ts-node: ^10.9.1
@@ -35,11 +32,10 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
-  '@prisma/client': 4.2.1_prisma@4.2.1
+  '@prisma/client': 4.7.1_prisma@4.7.1
   '@types/passport': 1.0.11
   '@types/passport-twitter': 1.0.37
   chalk: 4.1.2
-  chrome-aws-lambda: 10.1.0
   config: 3.3.7
   connect-redis: 6.1.3
   cors: 2.8.5
@@ -50,10 +46,9 @@ dependencies:
   express-session: 1.17.3
   ioredis: 5.2.4
   nodemon: 2.0.19
-  oauth: 0.10.0
   passport: 0.6.0
   passport-twitter: 1.0.4
-  prisma: 4.2.1
+  prisma: 4.7.1
   puppeteer: 19.3.0
   request: 2.88.2
   ts-node: 10.9.1_lep773egrlwq7kh77ngus6artu
@@ -66,7 +61,6 @@ devDependencies:
   '@types/dotenv': 8.2.0
   '@types/express': 4.17.13
   '@types/node': 18.7.1
-  '@types/oauth': 0.9.1
   ts-node-dev: 2.0.0_lep773egrlwq7kh77ngus6artu
   tsc-alias: 1.7.0
 
@@ -137,8 +131,8 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@prisma/client/4.2.1_prisma@4.2.1:
-    resolution: {integrity: sha512-PZBkY60+k5oix+e6IUfl3ub8TbRLNsPLdfWrdy2eh80WcHTaT+/UfvXf/B7gXedH7FRtbPFHZXk1hZenJiJZFQ==}
+  /@prisma/client/4.7.1_prisma@4.7.1:
+    resolution: {integrity: sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
@@ -147,16 +141,16 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 4.2.0-33.2920a97877e12e055c1333079b8d19cee7f33826
-      prisma: 4.2.1
+      '@prisma/engines-version': 4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c
+      prisma: 4.7.1
     dev: false
 
-  /@prisma/engines-version/4.2.0-33.2920a97877e12e055c1333079b8d19cee7f33826:
-    resolution: {integrity: sha512-tktkqdiwqE4QhmE088boPt+FwPj1Jub/zk+5F6sEfcRHzO5yz9jyMD5HFVtiwxZPLx/8Xg9ElnuTi8E5lWVQFQ==}
+  /@prisma/engines-version/4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c:
+    resolution: {integrity: sha512-Bd4LZ+WAnUHOq31e9X/ihi5zPlr4SzTRwUZZYxvWOxlerIZ7HJlVa9zXpuKTKLpI9O1l8Ec4OYCKsivWCs5a3Q==}
     dev: false
 
-  /@prisma/engines/4.2.1:
-    resolution: {integrity: sha512-0KqBwREUOjBiHwITsQzw2DWfLHjntvbqzGRawj4sBMnIiL5CXwyDUKeHOwXzKMtNr1rEjxEsypM14g0CzLRK3g==}
+  /@prisma/engines/4.7.1:
+    resolution: {integrity: sha512-zWabHosTdLpXXlMefHmnouhXMoTB1+SCbUU3t4FCmdrtIOZcarPKU3Alto7gm/pZ9vHlGOXHCfVZ1G7OIrSbog==}
     requiresBuild: true
     dev: false
 
@@ -218,12 +212,6 @@ packages:
 
   /@types/node/18.7.1:
     resolution: {integrity: sha512-GKX1Qnqxo4S+Z/+Z8KKPLpH282LD7jLHWJcVryOflnsnH+BtSDfieR6ObwBMwpnNws0bUK8GI7z0unQf9bARNQ==}
-
-  /@types/oauth/0.9.1:
-    resolution: {integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==}
-    dependencies:
-      '@types/node': 18.7.1
-    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -491,15 +479,6 @@ packages:
 
   /chownr/1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
-    dev: false
-
-  /chrome-aws-lambda/10.1.0:
-    resolution: {integrity: sha512-NZQVf+J4kqG4sVhRm3WNmOfzY0OtTSm+S8rg77pwePa9RCYHzhnzRs8YvNI6L9tALIW6RpmefWiPURt3vURXcw==}
-    engines: {node: '>= 10.16'}
-    peerDependencies:
-      puppeteer-core: ^10.1.0
-    dependencies:
-      lambdafs: 2.1.1
     dev: false
 
   /cluster-key-slot/1.1.2:
@@ -1202,14 +1181,6 @@ packages:
       verror: 1.10.0
     dev: false
 
-  /lambdafs/2.1.1:
-    resolution: {integrity: sha512-x5k8JcoJWkWLvCVBzrl4pzvkEHSgSBqFjg3Dpsc4AcTMq7oUMym4cL/gRTZ6VM4mUMY+M0dIbQ+V1c1tsqqanQ==}
-    engines: {node: '>= 10.16'}
-    hasBin: true
-    dev: false
-    bundledDependencies:
-      - tar-fs
-
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: false
@@ -1355,10 +1326,6 @@ packages:
     resolution: {integrity: sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==}
     dev: false
 
-  /oauth/0.10.0:
-    resolution: {integrity: sha512-1orQ9MT1vHFGQxhuy7E/0gECD3fd2fCC+PIX+/jgmU/gI3EpRocXtmtvxCO5x3WZ443FLTLFWNDjl5MPJf9u+Q==}
-    dev: false
-
   /oauth/0.9.15:
     resolution: {integrity: sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==}
     dev: false
@@ -1485,13 +1452,13 @@ packages:
       queue-lit: 1.3.0
     dev: true
 
-  /prisma/4.2.1:
-    resolution: {integrity: sha512-HuYqnTDgH8atjPGtYmY0Ql9XrrJnfW7daG1PtAJRW0E6gJxc50lY3vrIDn0yjMR3TvRlypjTcspQX8DT+xD4Sg==}
+  /prisma/4.7.1:
+    resolution: {integrity: sha512-CCQP+m+1qZOGIZlvnL6T3ZwaU0LAleIHYFPN9tFSzjs/KL6vH9rlYbGOkTuG9Q1s6Ki5D0LJlYlW18Z9EBUpGg==}
     engines: {node: '>=14.17'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 4.2.1
+      '@prisma/engines': 4.7.1
     dev: false
 
   /progress/2.0.3:
