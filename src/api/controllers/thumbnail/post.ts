@@ -31,11 +31,13 @@ export const sendImageToS3 = async (req: Request, res: APIJson) => {
         region: BUCKET_REGION,
     });
     try {
+        console.log(`${req.user?.id}: generating thumbnail for ${id}`);
         const put = new PutObjectCommand(params);
 
         await s3.send(put);
         const command = new GetObjectCommand(params);
-        const url = await getSignedUrl(s3, command);
+        const url = await getSignedUrl(s3, command, { expiresIn: 0 });
+
         if (url) {
             const updated = await prisma.post.update({
                 where: {

@@ -13,7 +13,10 @@ export const editPost = async (req: Request, res: APIJson) => {
         });
         if (!post) {
             res.status(404).json({ error: 'Post not found' });
-        } else if (post?.authorId !== req.user?.id) {
+        } else if (
+            post?.authorId !== req.user?.id ||
+            req.user.role !== 'ADMIN'
+        ) {
             res.status(401).json({ error: 'true' });
         } else {
             // const category = await prisma.category.findUnique({
