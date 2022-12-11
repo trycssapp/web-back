@@ -10,12 +10,13 @@ import authStrategy from './lib/authStrategy';
 import { redis } from './lib/utils/redis';
 
 const app = express();
+const bodyParser = require('body-parser');
 
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
 
-app.use(express.json());
-
+app.use(bodyParser.json({ limit: '3mb' }));
+app.use(bodyParser.urlencoded({ limit: '3mb', extended: true }));
 app.listen(config.port, async () => {
     await redis.connect();
 
@@ -41,6 +42,7 @@ app.listen(config.port, async () => {
     );
 
     authStrategy();
+
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(
