@@ -33,8 +33,8 @@ export const removePost = async (req: Request, res: APIJson) => {
             if (!post) {
                 res.status(404).json({ error: 'Post not found' });
             } else if (
-                post?.authorId !== req.user?.id ||
-                req.user.role !== 'ADMIN'
+                req.user!.role !== 'ADMIN' ||
+                post?.authorId !== req.user?.id
             ) {
                 res.status(401).json({ error: 'true' });
             } else return res.json({ message: 'Deleted post' });
