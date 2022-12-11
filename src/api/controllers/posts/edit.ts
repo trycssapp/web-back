@@ -11,38 +11,28 @@ export const editPost = async (req: Request, res: APIJson) => {
                 id: postId,
             },
         });
-        if (!post) {
-            res.status(404).json({ error: 'Post not found' });
-        } else if (
-            req.user!.role !== 'ADMIN' ||
-            post?.authorId !== req.user?.id
-        ) {
-            res.status(401).json({ error: 'true' });
-        } else {
-            // const category = await prisma.category.findUnique({
-            //     where: { value: req.body.category },
-            // });
-
-            // if (!category) {
-            //     return res.status(400).json({
-            //         error: `Category ${req.body.category} does not exist.`,
-            //     });
-            // } else {
-            const edited = await prisma.post.update({
-                where: {
-                    id: postId,
-                },
-                data: {
-                    ...req.body,
-                },
-            });
-            if (edited) {
-                return res.json({ payload: { results: edited } });
+        if (post) {
+            if (
+                req.user &&
+                (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
+            ) {
+                const updated = await prisma.post.update({
+                    data: {
+                        ...req.body,
+                    },
+                    where: {
+                        id: postId,
+                    },
+                });
+                if (updated) {
+                    return res.json({ payload: { results: updated } });
+                } else {
+                    res.status(404).json({ error: 'Post not found' });
+                }
             } else {
-                res.status(400).json({ error: 'Failed to update post' });
+                return res.status(401);
             }
-            // }
-        }
+        } else return res.status(404).json({ error: 'Post not found' });
     } catch (error: any) {
         console.log(error.message);
         res.status(400).json({

@@ -6,39 +6,30 @@ export const removePost = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
     try {
-        if (id == '*') {
-            const posts = await prisma.post.findMany({});
-            posts.forEach(async (x) => {
-                console.log(x);
-
-                const deleted = await prisma.post.deleteMany({
+        const post = await prisma.post.findUnique({
+            where: {
+                id,
+            },
+        });
+        if (post) {
+            if (
+                req.user &&
+                (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
+            ) {
+                const deleted = await prisma.post.delete({
                     where: {
-                        id: x.id,
+                        id,
                     },
                 });
                 if (deleted) {
-                    return res.json({ message: 'deleted all posts' });
+                    return res.json({ message: 'Deleted post' });
                 } else {
-                    return res
-                        .status(400)
-                        .json({ message: 'failed to delete all posts' });
+                    res.status(404).json({ error: 'Post not found' });
                 }
-            });
-        } else {
-            const post = await prisma.post.delete({
-                where: {
-                    id,
-                },
-            });
-            if (!post) {
-                res.status(404).json({ error: 'Post not found' });
-            } else if (
-                req.user!.role !== 'ADMIN' ||
-                post?.authorId !== req.user?.id
-            ) {
-                res.status(401).json({ error: 'true' });
-            } else return res.json({ message: 'Deleted post' });
-        }
+            } else {
+                return res.status(401);
+            }
+        } else return res.status(404).json({ error: 'Post not found' });
     } catch (error: any) {
         res.status(400).json({
             error: error.message,
