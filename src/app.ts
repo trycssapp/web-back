@@ -8,6 +8,7 @@ import api from './api';
 import config from './config';
 import authStrategy from './lib/authStrategy';
 import { redis } from './lib/utils/redis';
+var morgan = require('morgan');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -68,5 +69,7 @@ app.listen(config.port, async () => {
             chalk.hex('#5DADE2')(':' + config.port) +
             '\n'
     );
+    app.use(morgan('tiny'));
+
     app.use('/', api);
 });
