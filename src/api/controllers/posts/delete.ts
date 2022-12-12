@@ -1,3 +1,4 @@
+import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
@@ -5,6 +6,22 @@ import { APIJson } from '../../../lib/types/types';
 export const removePost = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
+    const BUCKET_NAME = process.env.BUCKET_NAME as string;
+    const BUCKET_REGION = process.env.BUCKET_REGION as string;
+    const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID as string;
+    const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY as string;
+
+    const s3 = new S3Client({
+        credentials: {
+            accessKeyId: AWS_ACCESS_KEY_ID,
+            secretAccessKey: AWS_SECRET_ACCESS_KEY,
+        },
+        region: BUCKET_REGION,
+    });
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: id + '.png',
+    };
     try {
         const post = await prisma.post.findUnique({
             where: {
@@ -22,6 +39,8 @@ export const removePost = async (req: Request, res: APIJson) => {
                     },
                 });
                 if (deleted) {
+                    const command = new DeleteObjectCommand(params);
+                    await s3.send(command);
                     return res.json({ message: 'Deleted post' });
                 } else {
                     res.status(404).json({ error: 'Post not found' });
