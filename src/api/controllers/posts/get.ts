@@ -15,7 +15,7 @@ export const getPost = async (req: Request, res: APIJson) => {
             },
         });
         if (!post) {
-            throw new Error('Post not found');
+            return res.status(404).json({ error: 'Post not found' });
         } else return res.json({ payload: { results: post } });
     } catch (error: any) {
         res.status(400).json({
