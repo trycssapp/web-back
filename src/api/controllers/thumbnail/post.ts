@@ -14,7 +14,7 @@ export const sendImageToS3 = async (req: Request, res: APIJson) => {
         Bucket: BUCKET_NAME,
         Key: id + '.png',
         Body: Buffer.from(req.body?.buffer),
-        ContenType: 'image/png',
+        ContentType: 'image/png',
     };
 
     const s3 = new S3Client({
