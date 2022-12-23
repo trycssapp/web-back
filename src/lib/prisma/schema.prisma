@@ -17,6 +17,20 @@ enum Role {
     USER
 }
 
+model PostLike {
+    id String @id @default(cuid())
+
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    createdAt DateTime @default(now())
+
+    @@map("templateLikes")
+}
+
 model Post {
     id String @id @unique @default(cuid())
 
@@ -39,6 +53,9 @@ model Post {
     libraryRelations Library? @relation(fields: [library], references: [value], onDelete: SetDefault)
     library          String?  @default("Unknown")
     libraryVersion   String?
+
+    likes    PostLike[]
+    comments Comment[]
 
     createdAt DateTime @default(now())
 
@@ -64,8 +81,20 @@ model Library {
     @@map("libraries")
 }
 
+model Follows {
+    follower    User   @relation("follower", fields: [followerId], references: [id])
+    followerId  String
+    following   User   @relation("following", fields: [followingId], references: [id])
+    followingId String
+
+    @@id([followerId, followingId])
+}
+
 model User {
     id String @id @unique @default(cuid())
+
+    followers Follows[] @relation("following")
+    following Follows[] @relation("follower")
 
     twitterId String? @unique
     discordId String? @unique
@@ -79,7 +108,70 @@ model User {
 
     posts Post[]
 
+    comments      Comment[]
+    replies       Reply[]
+    commentsLiked CommentLike[]
+    repliesLiked  ReplyLike[]
+    postsLiked    PostLike[]
+
     createdAt DateTime @default(now())
 
     @@map("users")
+}
+
+model CommentLike {
+    id String @id @default(cuid())
+
+    comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    commentId String
+    user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+
+    createdAt DateTime @default(now())
+
+    @@map("commentLikes")
+}
+
+model Comment {
+    id      String @id @default(cuid())
+    comment String
+
+    user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId  String
+    post    Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId  String
+    likes   CommentLike[]
+    replies Reply[]
+
+    createdAt DateTime @default(now())
+
+    @@map("comments")
+}
+
+model Reply {
+    id    String @id @default(cuid())
+    reply String
+
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    comment   Comment     @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    commentId String
+    likes     ReplyLike[]
+
+    createdAt DateTime @default(now())
+
+    @@map("replies")
+}
+
+model ReplyLike {
+    id String @id @default(cuid())
+
+    reply   Reply  @relation(fields: [replyId], references: [id], onDelete: Cascade)
+    replyId String
+    user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId  String
+
+    createdAt DateTime @default(now())
+
+    @@map("replyLikes")
 }
