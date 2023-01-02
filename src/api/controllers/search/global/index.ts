@@ -18,7 +18,7 @@ export const searchComponents = async (req: Request, res: APIJson) => {
             .map((x) => x)
             .join('|');
 
-        const posts = await prisma.component.findMany({
+        const components = await prisma.component.findMany({
             orderBy: { createdAt: 'desc' },
             where: {
                 ...(query == '*'
@@ -52,7 +52,41 @@ export const searchComponents = async (req: Request, res: APIJson) => {
             },
             include: { author: true },
         });
-        const aggregation = await prisma.componentCategory.findMany({
+        const pages = await prisma.component.findMany({
+            orderBy: { createdAt: 'desc' },
+            where: {
+                ...(query == '*'
+                    ? {}
+                    : {
+                          title: {
+                              contains: query,
+                              mode: 'insensitive',
+                          },
+                          OR: {
+                              description: {
+                                  contains: query,
+                                  mode: 'insensitive',
+                              },
+                          },
+                      }),
+                AND: {
+                    library: {
+                        equals: filter.library,
+                    },
+                    animated: {
+                        equals: filter.animated,
+                    },
+                    theme: {
+                        equals: filter.theme,
+                    },
+                    category: {
+                        in: filter.categories,
+                    },
+                },
+            },
+            include: { author: true },
+        });
+        const componentsAggregation = await prisma.componentCategory.findMany({
             include: {
                 _count: {
                     select: {
@@ -68,22 +102,41 @@ export const searchComponents = async (req: Request, res: APIJson) => {
                 },
             },
         });
+        const pagesAggregation = await prisma.pageCategory.findMany({
+            include: {
+                _count: {
+                    select: {
+                        pages: {
+                            where: {
+                                library: {
+                                    contains: filter.library,
+                                    mode: 'insensitive',
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        });
 
-        if (!posts) {
-            throw new Error('Component not found');
-        } else
-            return res.json({
-                payload: {
-                    results: posts,
+        return res.json({
+            payload: {
+                results: { components, pages },
 
-                    // query: q,
-                    distribution: aggregation.reduce(
+                // query: q,
+                distribution: {
+                    components: componentsAggregation.reduce(
                         (a, v) => ({ ...a, [v.value]: v._count?.components }),
                         {}
                     ),
-                    count: posts.length,
+                    pages: pagesAggregation.reduce(
+                        (a, v) => ({ ...a, [v.value]: v._count?.pages }),
+                        {}
+                    ),
                 },
-            });
+                count: pages.length + components.length,
+            },
+        });
     } catch (error: any) {
         res.status(400).json({
             error: error.message,

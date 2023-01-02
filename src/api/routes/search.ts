@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const search = Router();
 
-import { searchComponents } from '../controllers/search/components';
+import { searchComponents } from '../controllers/search/global';
 
 search.post('/', searchComponents);
 
