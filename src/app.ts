@@ -8,13 +8,16 @@ import api from './api';
 import config from './config';
 import authStrategy from './lib/authStrategy';
 import { redis } from './lib/utils/redis';
+const bodyParser = require('body-parser');
 
 const app = express();
+const morgan = require('morgan');
 
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
 
-app.use(express.json());
+app.use(bodyParser.json({ limit: '3mb' }));
+app.use(bodyParser.urlencoded({ limit: '3mb', extended: true }));
 
 app.listen(config.port, async () => {
     await redis.connect();
@@ -59,6 +62,7 @@ app.listen(config.port, async () => {
             credentials: true,
         })
     );
+    app.use(morgan('tiny'));
     console.log(
         chalk.hex('#3498DB')('\nLOG @ ') +
             chalk.hex('#AF7AC5')('server:: ') +
