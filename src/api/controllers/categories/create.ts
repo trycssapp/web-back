@@ -4,30 +4,48 @@ import { APIJson } from '../../../lib/types/types';
 import { Category } from './../../../lib/types/types';
 
 export const addCategory = async (req: Request, res: APIJson) => {
+    const { type } = req.query as { type: 'components' | 'pages' };
     try {
         let array: Category[] = [];
         const added = async () => {
             if (Array.isArray(req.body)) {
                 req.body.forEach(async (x) => {
-                    console.log('array', x);
-
-                    await prisma.category
-                        .create({
-                            data: {
-                                label: x.label,
-                                value: x.value,
-                            },
-                        })
-                        .then((x) => array.push(x));
+                    if (type === 'components') {
+                        await prisma.componentCategory
+                            .create({
+                                data: {
+                                    label: x.label,
+                                    value: x.value,
+                                },
+                            })
+                            .then((x) => array.push(x));
+                    } else if (type === 'pages') {
+                        await prisma.pageCategory
+                            .create({
+                                data: {
+                                    label: x.label,
+                                    value: x.value,
+                                },
+                            })
+                            .then((x) => array.push(x));
+                    }
                 });
             } else {
-                console.log('singEl', req.body);
-                await prisma.category.create({
-                    data: {
-                        label: req.body.label,
-                        value: req.body.value,
-                    },
-                });
+                if (type == 'components') {
+                    await prisma.componentCategory.create({
+                        data: {
+                            label: req.body.label,
+                            value: req.body.value,
+                        },
+                    });
+                } else if (type == 'pages') {
+                    await prisma.pageCategory.create({
+                        data: {
+                            label: req.body.label,
+                            value: req.body.value,
+                        },
+                    });
+                }
                 array.push(req.body);
             }
             return array;

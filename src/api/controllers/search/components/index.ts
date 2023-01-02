@@ -52,7 +52,7 @@ export const searchComponents = async (req: Request, res: APIJson) => {
             },
             include: { author: true },
         });
-        const aggregation = await prisma.category.findMany({
+        const aggregation = await prisma.componentCategory.findMany({
             include: {
                 _count: {
                     select: {
@@ -68,6 +68,7 @@ export const searchComponents = async (req: Request, res: APIJson) => {
                 },
             },
         });
+
         if (!posts) {
             throw new Error('Component not found');
         } else

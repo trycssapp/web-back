@@ -16,7 +16,7 @@ export const createComponent = async (req: Request, res: APIJson) => {
         responsive,
     } = req.body;
     try {
-        const category = await prisma.category.findUnique({
+        const category = await prisma.componentCategory.findUnique({
             where: { value: req.body.category },
         });
 
