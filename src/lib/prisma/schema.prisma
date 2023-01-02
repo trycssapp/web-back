@@ -17,11 +17,16 @@ enum Role {
     USER
 }
 
-model PostLike {
+enum ComponentType {
+    COMPONENT
+    SECTION
+}
+
+model ComponentLike {
     id String @id @default(cuid())
 
-    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId String
+    component     Component @relation(fields: [componentLike], references: [id], onDelete: Cascade)
+    componentLike String
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
@@ -31,7 +36,7 @@ model PostLike {
     @@map("templateLikes")
 }
 
-model Post {
+model Component {
     id String @id @unique @default(cuid())
 
     title       String
@@ -40,6 +45,7 @@ model Post {
 
     generatedImage String?
 
+    type       ComponentType? @default(COMPONENT)
     animated   Boolean?
     responsive Boolean?
     theme      String?
@@ -54,18 +60,18 @@ model Post {
     library          String?  @default("Unknown")
     libraryVersion   String?
 
-    likes    PostLike[]
+    likes    ComponentLike[]
     comments Comment[]
 
     createdAt DateTime @default(now())
 
-    @@map("posts")
+    @@map("components")
 }
 
 model Category {
-    value String @id @unique
-    label String
-    posts Post[]
+    value      String      @id @unique
+    label      String
+    components Component[]
 
     @@map("categories")
 }
@@ -76,7 +82,7 @@ model Library {
     versions String[]
     docs     String?
 
-    posts Post[]
+    components Component[]
 
     @@map("libraries")
 }
@@ -96,23 +102,29 @@ model User {
     followers Follows[] @relation("following")
     following Follows[] @relation("follower")
 
-    twitterId String? @unique
-    discordId String? @unique
+    twitterId       String? @unique
+    twitterUsername String? @unique
 
-    username    String @unique
-    displayName String @default("")
+    // githubUsername String?
+
+    username    String  @unique
+    displayName String  @default("")
+    bio         String? @default("")
+    location    String?
+    websiteUrl  String?
+    tokens      String?
 
     avatar      String
     role        Role   @default(USER)
     preferences Json[] @default([])
 
-    posts Post[]
+    components Component[]
 
-    comments      Comment[]
-    replies       Reply[]
-    commentsLiked CommentLike[]
-    repliesLiked  ReplyLike[]
-    postsLiked    PostLike[]
+    comments        Comment[]
+    replies         Reply[]
+    commentsLiked   CommentLike[]
+    repliesLiked    ReplyLike[]
+    componentsLiked ComponentLike[]
 
     createdAt DateTime @default(now())
 
@@ -136,12 +148,12 @@ model Comment {
     id      String @id @default(cuid())
     comment String
 
-    user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId  String
-    post    Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId  String
-    likes   CommentLike[]
-    replies Reply[]
+    user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    component   Component     @relation(fields: [componentId], references: [id], onDelete: Cascade)
+    componentId String
+    likes       CommentLike[]
+    replies     Reply[]
 
     createdAt DateTime @default(now())
 
