@@ -31,7 +31,7 @@ export const addDummyData = async (req: Request, res: APIJson) => {
 
     try {
         const added = posts.map(async (x) => {
-            await prisma.post.create({
+            await prisma.component.create({
                 data: {
                     author: {
                         connect: {

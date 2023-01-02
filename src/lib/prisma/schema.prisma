@@ -17,11 +17,6 @@ enum Role {
     USER
 }
 
-enum ComponentType {
-    COMPONENT
-    SECTION
-}
-
 model ComponentLike {
     id String @id @default(cuid())
 
@@ -45,7 +40,6 @@ model Component {
 
     generatedImage String?
 
-    type       ComponentType? @default(COMPONENT)
     animated   Boolean?
     responsive Boolean?
     theme      String?

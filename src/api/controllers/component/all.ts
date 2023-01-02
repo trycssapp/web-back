@@ -2,9 +2,9 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const allPosts = async (req: Request, res: APIJson) => {
+export const allComponents = async (req: Request, res: APIJson) => {
     try {
-        const posts = await prisma.post.findMany({
+        const posts = await prisma.component.findMany({
             include: { author: true },
             orderBy: { createdAt: 'desc' },
         });

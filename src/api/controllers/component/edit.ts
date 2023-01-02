@@ -2,17 +2,17 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const editPost = async (req: Request, res: APIJson) => {
+export const editComponent = async (req: Request, res: APIJson) => {
     const postId = req.params.id;
 
     try {
-        const post = await prisma.post.findUnique({
+        const post = await prisma.component.findUnique({
             where: {
                 id: postId,
             },
         });
         if (!post) {
-            res.status(404).json({ error: 'Post not found' });
+            res.status(404).json({ error: 'Component not found' });
         } else if (post?.authorId !== req.user?.id) {
             res.status(401).json({ error: 'true' });
         } else {
@@ -25,7 +25,7 @@ export const editPost = async (req: Request, res: APIJson) => {
             //         error: `Category ${req.body.category} does not exist.`,
             //     });
             // } else {
-            const edited = await prisma.post.update({
+            const edited = await prisma.component.update({
                 where: {
                     id: postId,
                 },
@@ -36,7 +36,7 @@ export const editPost = async (req: Request, res: APIJson) => {
             if (edited) {
                 return res.json({ payload: { results: edited } });
             } else {
-                res.status(400).json({ error: 'Failed to update post' });
+                res.status(400).json({ error: 'Failed to update component' });
             }
             // }
         }

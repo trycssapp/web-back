@@ -11,7 +11,7 @@ export const getUser = async (req: Request, res: APIJson) => {
                 id,
             },
             include: {
-                posts: true,
+                components: true,
             },
         });
         if (!user) {

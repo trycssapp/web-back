@@ -2,7 +2,7 @@ import { Request } from 'express';
 import prisma from '../../../../lib/prisma';
 import { APIJson } from '../../../../lib/types/types';
 
-export const searchPosts = async (req: Request, res: APIJson) => {
+export const searchComponents = async (req: Request, res: APIJson) => {
     const { q, filter } = req.body as {
         q: string;
         filter: {
@@ -18,7 +18,7 @@ export const searchPosts = async (req: Request, res: APIJson) => {
             .map((x) => x)
             .join('|');
 
-        const posts = await prisma.post.findMany({
+        const posts = await prisma.component.findMany({
             orderBy: { createdAt: 'desc' },
             where: {
                 ...(query == '*'
@@ -56,7 +56,7 @@ export const searchPosts = async (req: Request, res: APIJson) => {
             include: {
                 _count: {
                     select: {
-                        posts: {
+                        components: {
                             where: {
                                 library: {
                                     contains: filter.library,
@@ -69,7 +69,7 @@ export const searchPosts = async (req: Request, res: APIJson) => {
             },
         });
         if (!posts) {
-            throw new Error('Post not found');
+            throw new Error('Component not found');
         } else
             return res.json({
                 payload: {
@@ -77,7 +77,7 @@ export const searchPosts = async (req: Request, res: APIJson) => {
 
                     // query: q,
                     distribution: aggregation.reduce(
-                        (a, v) => ({ ...a, [v.value]: v._count?.posts }),
+                        (a, v) => ({ ...a, [v.value]: v._count?.components }),
                         {}
                     ),
                     count: posts.length,

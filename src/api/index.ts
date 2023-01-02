@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
 import auth from './routes/auth';
 import categories from './routes/categories';
+import component from './routes/component';
 import library from './routes/library';
-import posts from './routes/posts';
 import search from './routes/search';
 import user from './routes/user';
 
@@ -14,7 +14,7 @@ api.get('/', (req: Request, res: Response) => {
 
 api.use('/auth', auth);
 api.use('/users', user);
-api.use('/posts', posts);
+api.use('/components', component);
 api.use('/search', search);
 api.use('/categories', categories);
 api.use('/library', library);

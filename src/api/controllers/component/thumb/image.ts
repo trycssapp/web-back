@@ -29,7 +29,7 @@ export const renderImage = async (req: Request, res: APIJson) => {
             const mimeType = 'image/png';
 
             if (image) {
-                const updated = await prisma.post.update({
+                const updated = await prisma.component.update({
                     where: {
                         id,
                     },
