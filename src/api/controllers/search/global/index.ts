@@ -2,7 +2,7 @@ import { Request } from 'express';
 import prisma from '../../../../lib/prisma';
 import { APIJson } from '../../../../lib/types/types';
 
-export const searchComponents = async (req: Request, res: APIJson) => {
+export const searchGlobal = async (req: Request, res: APIJson) => {
     const { q, filter } = req.body as {
         q: string;
         filter: {
