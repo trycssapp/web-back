@@ -41,7 +41,7 @@ export const sendImageToS3 = async (req: Request, res: APIJson) => {
                           generatedImage: `https://all-thumbnails.s3.us-west-2.amazonaws.com/${id}.png`,
                       },
                   })
-                : await prisma.page.update({
+                : await prisma.layout.update({
                       where: {
                           id,
                       },
