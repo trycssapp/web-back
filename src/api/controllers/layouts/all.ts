@@ -2,9 +2,9 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const allPages = async (req: Request, res: APIJson) => {
+export const allLayouts = async (req: Request, res: APIJson) => {
     try {
-        const page = await prisma.page.findMany({
+        const page = await prisma.layout.findMany({
             include: { author: true },
             orderBy: { createdAt: 'desc' },
         });

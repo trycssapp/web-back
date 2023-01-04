@@ -1,6 +1,6 @@
 import { Router } from 'express';
+import { searchPages } from '../controllers/search/layouts/index';
 import { searchComponents } from './../controllers/search/components/index';
-import { searchPages } from './../controllers/search/pages/index';
 
 const search = Router();
 

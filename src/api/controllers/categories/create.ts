@@ -4,13 +4,13 @@ import { APIJson } from '../../../lib/types/types';
 import { Category } from './../../../lib/types/types';
 
 export const addCategory = async (req: Request, res: APIJson) => {
-    const { type } = req.query as { type: 'components' | 'pages' };
+    const { type } = req.query as { type: 'component' | 'layout' };
     try {
         let array: Category[] = [];
         const added = async () => {
             if (Array.isArray(req.body)) {
                 req.body.forEach(async (x) => {
-                    if (type === 'components') {
+                    if (type === 'component') {
                         await prisma.componentCategory
                             .create({
                                 data: {
@@ -19,8 +19,8 @@ export const addCategory = async (req: Request, res: APIJson) => {
                                 },
                             })
                             .then((x) => array.push(x));
-                    } else if (type === 'pages') {
-                        await prisma.pageCategory
+                    } else if (type === 'layout') {
+                        await prisma.layoutCategory
                             .create({
                                 data: {
                                     label: x.label,
@@ -31,15 +31,15 @@ export const addCategory = async (req: Request, res: APIJson) => {
                     }
                 });
             } else {
-                if (type == 'components') {
+                if (type == 'component') {
                     await prisma.componentCategory.create({
                         data: {
                             label: req.body.label,
                             value: req.body.value,
                         },
                     });
-                } else if (type == 'pages') {
-                    await prisma.pageCategory.create({
+                } else if (type == 'layout') {
+                    await prisma.layoutCategory.create({
                         data: {
                             label: req.body.label,
                             value: req.body.value,

@@ -2,7 +2,7 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const createPage = async (req: Request, res: APIJson) => {
+export const createLayout = async (req: Request, res: APIJson) => {
     const userId = req?.user?.id;
     const {
         title,
@@ -16,7 +16,7 @@ export const createPage = async (req: Request, res: APIJson) => {
         responsive,
     } = req.body;
     try {
-        const category = await prisma.pageCategory.findUnique({
+        const category = await prisma.layoutCategory.findUnique({
             where: { value: req.body.category },
         });
 
@@ -25,7 +25,7 @@ export const createPage = async (req: Request, res: APIJson) => {
                 error: `Category ${req.body.category} does not exist.`,
             });
         } else {
-            const added = await prisma.page.create({
+            const added = await prisma.layout.create({
                 data: {
                     author: {
                         connect: {

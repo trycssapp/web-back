@@ -9,7 +9,7 @@ export const allLibraries = async (req: Request, res: APIJson) => {
                 _count: {
                     select: {
                         components: true,
-                        pages: true,
+                        layouts: true,
                     },
                 },
             },

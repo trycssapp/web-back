@@ -3,18 +3,18 @@ import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
 export const editCategory = async (req: Request, res: APIJson) => {
-    const { type } = req.query as { type: 'components' | 'pages' };
+    const { type } = req.query as { type: 'component' | 'layout' };
     const value = req.params.value;
 
     try {
         const category =
-            type === 'components'
+            type === 'component'
                 ? await prisma.componentCategory.findUnique({
                       where: {
                           value,
                       },
                   })
-                : await prisma.pageCategory.findUnique({
+                : await prisma.layoutCategory.findUnique({
                       where: {
                           value,
                       },
@@ -23,7 +23,7 @@ export const editCategory = async (req: Request, res: APIJson) => {
             res.status(404).json({ error: 'Category not found' });
         } else {
             const edit =
-                type === 'components'
+                type === 'component'
                     ? await prisma.componentCategory.update({
                           where: {
                               value,
@@ -32,7 +32,7 @@ export const editCategory = async (req: Request, res: APIJson) => {
                               ...req.body,
                           },
                       })
-                    : await prisma.pageCategory.update({
+                    : await prisma.layoutCategory.update({
                           where: {
                               value,
                           },

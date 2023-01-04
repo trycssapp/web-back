@@ -2,11 +2,11 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const getPage = async (req: Request, res: APIJson) => {
+export const getLayout = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
     try {
-        const post = await prisma.page.findUnique({
+        const post = await prisma.layout.findUnique({
             where: {
                 id,
             },

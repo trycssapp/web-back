@@ -102,11 +102,11 @@ export const searchGlobal = async (req: Request, res: APIJson) => {
                 },
             },
         });
-        const pagesAggregation = await prisma.pageCategory.findMany({
+        const pagesAggregation = await prisma.layoutCategory.findMany({
             include: {
                 _count: {
                     select: {
-                        pages: {
+                        layouts: {
                             where: {
                                 library: {
                                     contains: filter.library,
@@ -130,7 +130,7 @@ export const searchGlobal = async (req: Request, res: APIJson) => {
                         {}
                     ),
                     pages: pagesAggregation.reduce(
-                        (a, v) => ({ ...a, [v.value]: v._count?.pages }),
+                        (a, v) => ({ ...a, [v.value]: v._count?.layouts }),
                         {}
                     ),
                 },

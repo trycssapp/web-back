@@ -3,18 +3,18 @@ import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
 export const removeCategory = async (req: Request, res: APIJson) => {
-    const { type } = req.query as { type: 'components' | 'pages' };
+    const { type } = req.query as { type: 'component' | 'layout' };
     const value = req.params.value;
 
     try {
         const category =
-            type === 'components'
+            type === 'component'
                 ? await prisma.componentCategory.findUnique({
                       where: {
                           value,
                       },
                   })
-                : await prisma.pageCategory.findUnique({
+                : await prisma.layoutCategory.findUnique({
                       where: {
                           value,
                       },
@@ -23,13 +23,13 @@ export const removeCategory = async (req: Request, res: APIJson) => {
             res.status(404).json({ error: 'Category not found' });
         } else {
             const deleted =
-                type === 'components'
+                type === 'component'
                     ? await prisma.componentCategory.delete({
                           where: {
                               value,
                           },
                       })
-                    : await prisma.pageCategory.delete({
+                    : await prisma.layoutCategory.delete({
                           where: {
                               value,
                           },

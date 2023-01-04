@@ -2,11 +2,11 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const editPage = async (req: Request, res: APIJson) => {
+export const editLayout = async (req: Request, res: APIJson) => {
     const postId = req.params.id;
 
     try {
-        const post = await prisma.page.findUnique({
+        const post = await prisma.layout.findUnique({
             where: {
                 id: postId,
             },
@@ -16,7 +16,7 @@ export const editPage = async (req: Request, res: APIJson) => {
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
             ) {
-                const updated = await prisma.page.update({
+                const updated = await prisma.layout.update({
                     data: {
                         ...req.body,
                     },

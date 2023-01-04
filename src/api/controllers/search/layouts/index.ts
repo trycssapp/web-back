@@ -18,7 +18,7 @@ export const searchPages = async (req: Request, res: APIJson) => {
             .map((x) => x)
             .join('|');
 
-        const posts = await prisma.page.findMany({
+        const posts = await prisma.layout.findMany({
             orderBy: { createdAt: 'desc' },
             where: {
                 ...(query == '*'
@@ -52,11 +52,11 @@ export const searchPages = async (req: Request, res: APIJson) => {
             },
             include: { author: true },
         });
-        const aggregation = await prisma.pageCategory.findMany({
+        const aggregation = await prisma.layoutCategory.findMany({
             include: {
                 _count: {
                     select: {
-                        pages: {
+                        layouts: {
                             where: {
                                 library: {
                                     contains: filter.library,
@@ -70,7 +70,7 @@ export const searchPages = async (req: Request, res: APIJson) => {
         });
 
         if (!posts) {
-            throw new Error('Component not found');
+            throw new Error('Layout not found');
         } else
             return res.json({
                 payload: {
@@ -78,7 +78,7 @@ export const searchPages = async (req: Request, res: APIJson) => {
 
                     // query: q,
                     distribution: aggregation.reduce(
-                        (a, v) => ({ ...a, [v.value]: v._count?.pages }),
+                        (a, v) => ({ ...a, [v.value]: v._count?.layouts }),
                         {}
                     ),
                     count: posts.length,

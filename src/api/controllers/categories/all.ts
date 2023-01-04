@@ -3,13 +3,13 @@ import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
 export const allCategories = async (req: Request, res: APIJson) => {
-    const { type } = req.query as { type: 'components' | 'pages' };
+    const { type } = req.query as { type: 'component' | 'layout' };
 
     try {
         const categories =
-            type === 'components'
+            type === 'component'
                 ? await prisma.componentCategory.findMany()
-                : await prisma.pageCategory.findMany();
+                : await prisma.layoutCategory.findMany();
 
         if (!categories) {
             throw new Error('No categories');
