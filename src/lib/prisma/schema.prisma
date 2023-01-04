@@ -46,7 +46,7 @@ model Layout {
     responsive Boolean?
     theme      String?
 
-    author   User   @relation(fields: [authorId], references: [id])
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String
 
     categoryRelations LayoutCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
@@ -100,7 +100,7 @@ model Component {
     responsive Boolean?
     theme      String?
 
-    author   User   @relation(fields: [authorId], references: [id])
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String
 
     categoryRelations ComponentCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
@@ -182,10 +182,7 @@ model User {
     followers Follows[] @relation("following")
     following Follows[] @relation("follower")
 
-    twitterId       String? @unique
-    twitterUsername String? @unique
-
-    // githubUsername String?
+    githubId String? @unique
 
     username    String  @unique
     displayName String  @default("")
@@ -199,11 +196,6 @@ model User {
 
     components Component[]
     layouts    Layout[]
-
-    // comments        Comment[]
-    // replies         Reply[]
-    // commentsLiked   CommentLike[]
-    // repliesLiked    ReplyLike[]
 
     componentsLiked ComponentLike[]
     componentsSaved ComponentSave[]
