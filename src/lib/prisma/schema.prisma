@@ -17,25 +17,27 @@ enum Role {
     USER
 }
 
-model PageLike {
+model LayoutLike {
     id String @id @default(cuid())
 
-    page     Page   @relation(fields: [pageLike], references: [id], onDelete: Cascade)
-    pageLike String
+    layout     Layout @relation(fields: [layoutLike], references: [id], onDelete: Cascade)
+    layoutLike String
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     createdAt DateTime @default(now())
 
-    @@map("pageLikes")
+    @@map("layoutLikes")
 }
 
-model Page {
+model Layout {
     id String @id @unique @default(cuid())
 
-    title       String
-    code        Json?
+    title String
+    code  Json?
+    css   Json?
+
     description String?
 
     generatedImage String?
@@ -47,41 +49,41 @@ model Page {
     author   User   @relation(fields: [authorId], references: [id])
     authorId String
 
-    categoryRelations PageCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
-    category          String?       @default("Unknown")
+    categoryRelations LayoutCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
+    category          String?         @default("Unknown")
 
     libraryRelations Library? @relation(fields: [library], references: [value], onDelete: SetDefault)
     library          String?  @default("Unknown")
     libraryVersion   String?
 
-    likes PageLike[]
-    saves PageSave[]
+    likes LayoutLike[]
+    saves LayoutSave[]
 
     createdAt DateTime @default(now())
 
-    @@map("pages")
+    @@map("layouts")
 }
 
-model PageSave {
+model LayoutSave {
     id String @id @default(cuid())
 
-    page     Page   @relation(fields: [pageSave], references: [id], onDelete: Cascade)
-    pageSave String
+    layout     Layout @relation(fields: [layoutSave], references: [id], onDelete: Cascade)
+    layoutSave String
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String
 
     createdAt DateTime @default(now())
 
-    @@map("pageSaves")
+    @@map("layoutSaves")
 }
 
-model PageCategory {
-    value String @id @unique
-    label String
-    pages Page[]
+model LayoutCategory {
+    value   String   @id @unique
+    label   String
+    layouts Layout[]
 
-    @@map("pageCategories")
+    @@map("layoutCategories")
 }
 
 model Component {
@@ -89,6 +91,7 @@ model Component {
 
     title       String
     code        Json?
+    css         Json?
     description String?
 
     generatedImage String?
@@ -145,7 +148,7 @@ model Library {
     docs     String?
 
     components Component[]
-    pages      Page[]
+    layouts    Layout[]
 
     @@map("libraries")
 }
@@ -195,7 +198,7 @@ model User {
     role   Role   @default(USER)
 
     components Component[]
-    pages      Page[]
+    layouts    Layout[]
 
     // comments        Comment[]
     // replies         Reply[]
@@ -204,8 +207,8 @@ model User {
 
     componentsLiked ComponentLike[]
     componentsSaved ComponentSave[]
-    pagesLiked      PageLike[]
-    pagesSaved      PageSave[]
+    layoutsLiked    LayoutLike[]
+    layoutsSaved    LayoutSave[]
 
     createdAt DateTime @default(now())
 
