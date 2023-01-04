@@ -5,6 +5,8 @@ import { APIJson } from '../../../lib/types/types';
 
 export const sendImageToS3 = async (req: Request, res: APIJson) => {
     const id = req.params.id;
+    const { type } = req.query as { type: 'layout' | 'component' };
+
     const BUCKET_NAME = process.env.BUCKET_NAME as string;
     const BUCKET_REGION = process.env.BUCKET_REGION as string;
     const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID as string;
@@ -28,14 +30,25 @@ export const sendImageToS3 = async (req: Request, res: APIJson) => {
         const put = new PutObjectCommand(params);
 
         await s3.send(put);
-        const updated = await prisma.post.update({
-            where: {
-                id,
-            },
-            data: {
-                generatedImage: `https://all-thumbnails.s3.us-west-2.amazonaws.com/${id}.png`,
-            },
-        });
+
+        const updated =
+            type == 'component'
+                ? await prisma.component.update({
+                      where: {
+                          id,
+                      },
+                      data: {
+                          generatedImage: `https://all-thumbnails.s3.us-west-2.amazonaws.com/${id}.png`,
+                      },
+                  })
+                : await prisma.page.update({
+                      where: {
+                          id,
+                      },
+                      data: {
+                          generatedImage: `https://all-thumbnails.s3.us-west-2.amazonaws.com/${id}.png`,
+                      },
+                  });
         if (updated) {
             return res.json({
                 payload: { results: updated },

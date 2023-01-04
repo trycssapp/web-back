@@ -30,13 +30,9 @@ export declare module IUser {
     export type Roles = 'ADMIN' | 'USER' | 'MOD';
     export interface User {
         id: string;
-        twitterId?: string;
-        discordId?: string;
+        githubId?: string;
         username: string;
         avatar: string;
-        preferences: {
-            preferredLibrary: string;
-        };
         role: Roles;
         createdAt: string;
     }

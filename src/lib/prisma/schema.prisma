@@ -17,11 +17,27 @@ enum Role {
     USER
 }
 
-model Post {
+model LayoutLike {
+    id String @id @default(cuid())
+
+    layout     Layout @relation(fields: [layoutLike], references: [id], onDelete: Cascade)
+    layoutLike String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    createdAt DateTime @default(now())
+
+    @@map("layoutLikes")
+}
+
+model Layout {
     id String @id @unique @default(cuid())
 
-    title       String
-    code        Json?
+    title String
+    code  Json?
+    css   Json?
+
     description String?
 
     generatedImage String?
@@ -30,27 +46,99 @@ model Post {
     responsive Boolean?
     theme      String?
 
-    author   User   @relation(fields: [authorId], references: [id])
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String
 
-    categoryRelations Category? @relation(fields: [category], references: [value], onDelete: NoAction)
-    category          String?   @default("Unknown")
+    categoryRelations LayoutCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
+    category          String?         @default("Unknown")
 
     libraryRelations Library? @relation(fields: [library], references: [value], onDelete: SetDefault)
     library          String?  @default("Unknown")
     libraryVersion   String?
 
+    likes LayoutLike[]
+    saves LayoutSave[]
+
     createdAt DateTime @default(now())
 
-    @@map("posts")
+    @@map("layouts")
 }
 
-model Category {
-    value String @id @unique
-    label String
-    posts Post[]
+model LayoutSave {
+    id String @id @default(cuid())
 
-    @@map("categories")
+    layout     Layout @relation(fields: [layoutSave], references: [id], onDelete: Cascade)
+    layoutSave String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    createdAt DateTime @default(now())
+
+    @@map("layoutSaves")
+}
+
+model LayoutCategory {
+    value   String   @id @unique
+    label   String
+    layouts Layout[]
+
+    @@map("layoutCategories")
+}
+
+model Component {
+    id String @id @unique @default(cuid())
+
+    title       String
+    code        Json?
+    css         Json?
+    description String?
+
+    generatedImage String?
+
+    animated   Boolean?
+    responsive Boolean?
+    theme      String?
+
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId String
+
+    categoryRelations ComponentCategory? @relation(fields: [category], references: [value], onDelete: NoAction)
+    category          String?            @default("Unknown")
+
+    libraryRelations Library? @relation(fields: [library], references: [value], onDelete: SetDefault)
+    library          String?  @default("Unknown")
+    libraryVersion   String?
+
+    likes ComponentLike[]
+    saves ComponentSave[]
+    // comments Comment[]
+
+    createdAt DateTime @default(now())
+
+    @@map("components")
+}
+
+model ComponentLike {
+    id String @id @default(cuid())
+
+    component     Component @relation(fields: [componentLike], references: [id], onDelete: Cascade)
+    componentLike String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    createdAt DateTime @default(now())
+
+    @@map("componentLikes")
+}
+
+model ComponentCategory {
+    value      String      @id @unique
+    label      String
+    components Component[]
+
+    @@map("componentCategories")
 }
 
 model Library {
@@ -59,27 +147,119 @@ model Library {
     versions String[]
     docs     String?
 
-    posts Post[]
+    components Component[]
+    layouts    Layout[]
 
     @@map("libraries")
+}
+
+model ComponentSave {
+    id String @id @default(cuid())
+
+    component     Component @relation(fields: [componentSave], references: [id], onDelete: Cascade)
+    componentSave String
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+
+    createdAt DateTime @default(now())
+
+    @@map("componentSaves")
+}
+
+model Follows {
+    follower    User   @relation("follower", fields: [followerId], references: [id])
+    followerId  String
+    following   User   @relation("following", fields: [followingId], references: [id])
+    followingId String
+
+    @@id([followerId, followingId])
 }
 
 model User {
     id String @id @unique @default(cuid())
 
-    twitterId String? @unique
-    discordId String? @unique
+    followers Follows[] @relation("following")
+    following Follows[] @relation("follower")
 
-    username    String @unique
-    displayName String @default("")
+    githubId String? @unique
 
-    avatar      String
-    role        Role   @default(USER)
-    preferences Json[] @default([])
+    username    String  @unique
+    displayName String  @default("")
+    bio         String? @default("")
+    location    String?
+    websiteUrl  String?
+    tokens      String?
 
-    posts Post[]
+    avatar String
+    role   Role   @default(USER)
+
+    components Component[]
+    layouts    Layout[]
+
+    componentsLiked ComponentLike[]
+    componentsSaved ComponentSave[]
+    layoutsLiked    LayoutLike[]
+    layoutsSaved    LayoutSave[]
 
     createdAt DateTime @default(now())
 
     @@map("users")
 }
+
+// model CommentLike {
+//     id String @id @default(cuid())
+
+//     comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+//     commentId String
+//     user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//     userId    String
+
+//     createdAt DateTime @default(now())
+
+//     @@map("commentLikes")
+// }
+
+// model Comment {
+//     id      String @id @default(cuid())
+//     comment String
+
+//     user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+//     userId      String
+//     component   Component     @relation(fields: [componentId], references: [id], onDelete: Cascade)
+//     componentId String
+//     likes       CommentLike[]
+//     replies     Reply[]
+
+//     createdAt DateTime @default(now())
+
+//     @@map("comments")
+// }
+
+// model Reply {
+//     id    String @id @default(cuid())
+//     reply String
+
+//     user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+//     userId    String
+//     comment   Comment     @relation(fields: [commentId], references: [id], onDelete: Cascade)
+//     commentId String
+//     likes     ReplyLike[]
+
+//     createdAt DateTime @default(now())
+
+//     @@map("replies")
+// }
+
+// model ReplyLike {
+//     id String @id @default(cuid())
+
+//     reply   Reply  @relation(fields: [replyId], references: [id], onDelete: Cascade)
+//     replyId String
+//     user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//     userId  String
+
+//     createdAt DateTime @default(now())
+
+//     @@map("replyLikes")
+// }

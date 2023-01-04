@@ -3,7 +3,7 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const removePost = async (req: Request, res: APIJson) => {
+export const removeComponent = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
     const BUCKET_NAME = process.env.BUCKET_NAME as string;
@@ -23,7 +23,7 @@ export const removePost = async (req: Request, res: APIJson) => {
         Key: id + '.png',
     };
     try {
-        const post = await prisma.post.findUnique({
+        const post = await prisma.component.findUnique({
             where: {
                 id,
             },
@@ -33,7 +33,7 @@ export const removePost = async (req: Request, res: APIJson) => {
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
             ) {
-                const deleted = await prisma.post.delete({
+                const deleted = await prisma.component.delete({
                     where: {
                         id,
                     },
@@ -41,14 +41,14 @@ export const removePost = async (req: Request, res: APIJson) => {
                 if (deleted) {
                     const command = new DeleteObjectCommand(params);
                     await s3.send(command);
-                    return res.json({ message: 'Deleted post' });
+                    return res.json({ message: 'Deleted component' });
                 } else {
-                    res.status(404).json({ error: 'Post not found' });
+                    res.status(404).json({ error: 'Component not found' });
                 }
             } else {
                 return res.status(401);
             }
-        } else return res.status(404).json({ error: 'Post not found' });
+        } else return res.status(404).json({ error: 'Component not found' });
     } catch (error: any) {
         res.status(400).json({
             error: error.message,

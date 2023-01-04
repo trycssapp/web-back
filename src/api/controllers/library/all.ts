@@ -8,7 +8,8 @@ export const allLibraries = async (req: Request, res: APIJson) => {
             include: {
                 _count: {
                     select: {
-                        posts: true,
+                        components: true,
+                        layouts: true,
                     },
                 },
             },

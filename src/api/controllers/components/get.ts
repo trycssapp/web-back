@@ -2,11 +2,11 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const getPost = async (req: Request, res: APIJson) => {
+export const getComponent = async (req: Request, res: APIJson) => {
     const id = req.params.id;
 
     try {
-        const post = await prisma.post.findUnique({
+        const post = await prisma.component.findUnique({
             where: {
                 id,
             },
@@ -15,7 +15,7 @@ export const getPost = async (req: Request, res: APIJson) => {
             },
         });
         if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
+            throw new Error('Component not found');
         } else return res.json({ payload: { results: post } });
     } catch (error: any) {
         res.status(400).json({

@@ -2,7 +2,7 @@ import { Request } from 'express';
 import prisma from '../../../lib/prisma';
 import { APIJson } from '../../../lib/types/types';
 
-export const createPost = async (req: Request, res: APIJson) => {
+export const createLayout = async (req: Request, res: APIJson) => {
     const userId = req?.user?.id;
     const {
         title,
@@ -16,7 +16,7 @@ export const createPost = async (req: Request, res: APIJson) => {
         responsive,
     } = req.body;
     try {
-        const category = await prisma.category.findUnique({
+        const category = await prisma.layoutCategory.findUnique({
             where: { value: req.body.category },
         });
 
@@ -25,7 +25,7 @@ export const createPost = async (req: Request, res: APIJson) => {
                 error: `Category ${req.body.category} does not exist.`,
             });
         } else {
-            const added = await prisma.post.create({
+            const added = await prisma.layout.create({
                 data: {
                     author: {
                         connect: {
@@ -54,7 +54,7 @@ export const createPost = async (req: Request, res: APIJson) => {
                 },
             });
             if (!added) {
-                res.status(404).json({ error: 'Failed to add post' });
+                res.status(404).json({ error: 'Failed to add page' });
             } else {
                 return res.json({ payload: { results: added } });
             }

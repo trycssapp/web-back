@@ -8,10 +8,11 @@ import api from './api';
 import config from './config';
 import authStrategy from './lib/authStrategy';
 import { redis } from './lib/utils/redis';
-var morgan = require('morgan');
+
+const bodyParser = require('body-parser');
 
 const app = express();
-const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
@@ -62,6 +63,7 @@ app.listen(config.port, async () => {
             credentials: true,
         })
     );
+    app.use(morgan('tiny'));
     console.log(
         chalk.hex('#3498DB')('\nLOG @ ') +
             chalk.hex('#AF7AC5')('server:: ') +

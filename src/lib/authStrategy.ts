@@ -1,45 +1,46 @@
 import config from '../config';
 import prisma from './prisma';
-import { ITwitter, IUser } from './types/types';
+import { IUser } from './types/types';
 
 const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 
 export default function authStrategy() {
     passport.serializeUser((user: IUser.User, done: any) => {
         done(null, user);
     });
     passport.deserializeUser(async (profile: IUser.User, done: any) => {
+        console.log('ss', profile);
+
         const user = await prisma.user.findUnique({
             where: {
-                twitterId: profile.twitterId,
+                githubId: profile.id,
             },
         });
 
         if (user) done(null, profile);
         else {
-            done(null, false);
+            done(null, profile);
         }
     });
 
     passport.use(
-        new TwitterStrategy(
+        new GitHubStrategy(
             {
-                consumerKey: process.env.API_KEY,
-                consumerSecret: process.env.API_SECRET,
-                callbackURL: config.twitter.redirect_uri,
+                clientID: process.env.GITHUB_CLIENT_ID,
+                clientSecret: process.env.GITHUB_CLIENT_SECRET,
+                callbackURL: config.github.redirect_uri,
             },
             async (
-                _: any,
-                tokenSecret: any,
-                profile: ITwitter.User,
+                accessToken: any,
+                refreshToken: any,
+                profile: any,
                 done: any
             ) => {
                 const data = profile;
-
                 try {
                     const user = await prisma.user.findUnique({
-                        where: { twitterId: String(data.id) },
+                        where: { githubId: String(data.id) },
                     });
 
                     if (user) {
@@ -53,7 +54,10 @@ export default function authStrategy() {
                                 ),
                                 displayName: data.displayName,
                                 username: data.username,
-                                twitterId: String(data.id),
+                                githubId: String(data.id),
+                                websiteUrl: data._json.blog,
+                                bio: data._json.bio,
+                                location: data._json.location,
                             },
                         });
 
