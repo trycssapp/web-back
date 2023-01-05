@@ -12,6 +12,8 @@ export const getComponent = async (req: Request, res: APIJson) => {
             },
             include: {
                 author: true,
+                likes: { include: { user: true } },
+                saves: true,
             },
         });
         if (!post) {
