@@ -10,6 +10,7 @@ export const me = async (req: Request, res: APIJson) => {
             where: {
                 id: userId,
             },
+            include: { componentsSaved: true },
         });
         if (!user) {
             throw new Error('User not found');
