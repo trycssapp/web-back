@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+        "dev": "ts-node-dev --respawn --transpile-only --exit-child src/app.ts",
         "build": "tsc && tsc-alias",
         "start": "node dist/app",
         "dev:up": "docker-compose -p cssapp -f docker-compose.dev.yml up -d",
