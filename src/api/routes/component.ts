@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { requireAdmin } from '../../lib/middleware/requireAdmin';
 import requireAuth from '../../lib/middleware/requireAuth';
 import { addDummyData } from '../controllers/components/addDummyData';
+import { makeIntoLayout } from '../controllers/components/makeIntoLayout';
 import { likeCompnoent } from './../controllers/components/like';
 
 const components = Router();
@@ -16,6 +17,7 @@ import { getComponent } from '../controllers/components/get';
 components.get('/', allComponents);
 components.post('/', requireAuth, createComponent);
 components.put('/:id/like', requireAuth, likeCompnoent);
+components.put('/:id/changeType', requireAuth, makeIntoLayout);
 components.put('/:id/save', requireAuth, bookmarkComponent);
 components.delete('/:id', requireAuth, removeComponent);
 components.put('/:id', requireAuth, editComponent);
