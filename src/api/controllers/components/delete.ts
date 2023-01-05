@@ -52,7 +52,7 @@ export const removeComponent = async (req: Request, res: APIJson) => {
                     res.status(404).json({ error: 'Component not found' });
                 }
             } else {
-                return res.status(401);
+                return res.status(401).json({ error: 'Auth issue' });
             }
         } else return res.status(404).json({ error: 'Component not found' });
     } catch (error: any) {
