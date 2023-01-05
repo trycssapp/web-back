@@ -28,8 +28,10 @@ export const removeComponent = async (req: Request, res: APIJson) => {
                 id,
             },
         });
-        console.log(post);
         if (post) {
+            console.log('found post');
+            console.log('req', req.user);
+
             if (
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
