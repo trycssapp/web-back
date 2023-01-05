@@ -10,8 +10,6 @@ export default function authStrategy() {
         done(null, user);
     });
     passport.deserializeUser(async (profile: IUser.User, done: any) => {
-        console.log('ss', profile);
-
         const user = await prisma.user.findUnique({
             where: {
                 githubId: profile.id,

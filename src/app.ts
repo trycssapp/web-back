@@ -71,7 +71,6 @@ app.listen(config.port, async () => {
             chalk.hex('#5DADE2')(':' + config.port) +
             '\n'
     );
-    app.use(morgan('tiny'));
 
     app.use('/', api);
 });
