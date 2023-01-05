@@ -28,16 +28,20 @@ export const removeComponent = async (req: Request, res: APIJson) => {
                 id,
             },
         });
+        console.log(post);
         if (post) {
             if (
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
             ) {
+                console.log(req.user);
+
                 const deleted = await prisma.component.delete({
                     where: {
                         id,
                     },
                 });
+                console.log(deleted);
                 if (deleted) {
                     const command = new DeleteObjectCommand(params);
                     await s3.send(command);
