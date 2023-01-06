@@ -12,13 +12,17 @@ export const editComponent = async (req: Request, res: APIJson) => {
             },
         });
         if (post) {
+            const { code, library, libraryVersion, css } = req.body;
             if (
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
             ) {
                 const updated = await prisma.component.update({
                     data: {
-                        ...req.body,
+                        css,
+                        code,
+                        library,
+                        libraryVersion,
                     },
                     where: {
                         id: postId,
