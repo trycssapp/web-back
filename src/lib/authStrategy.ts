@@ -35,7 +35,13 @@ export default function authStrategy() {
                 profile: any,
                 done: any
             ) => {
-                const data = profile;
+                const data: {
+                    photos: Array<any>;
+                    displayName?: string;
+                    id: string;
+                    username: string;
+                    _json: any;
+                } = profile;
                 try {
                     const user = await prisma.user.findUnique({
                         where: { githubId: String(data.id) },
@@ -50,12 +56,12 @@ export default function authStrategy() {
                                     '_normal',
                                     ''
                                 ),
-                                displayName: data?.displayName,
+                                displayName: data?.displayName ?? undefined,
                                 username: data?.username,
                                 githubId: String(data.id),
-                                websiteUrl: data?._json.blog,
-                                bio: data?._json.bio,
-                                location: data?._json.location,
+                                websiteUrl: data?._json.blog ?? undefined,
+                                bio: data?._json.bio ?? undefined,
+                                location: data?._json.location ?? undefined,
                             },
                         });
 
