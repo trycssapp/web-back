@@ -50,12 +50,12 @@ export default function authStrategy() {
                                     '_normal',
                                     ''
                                 ),
-                                displayName: data.displayName,
-                                username: data.username,
+                                displayName: data?.displayName,
+                                username: data?.username,
                                 githubId: String(data.id),
-                                websiteUrl: data._json.blog,
-                                bio: data._json.bio,
-                                location: data._json.location,
+                                websiteUrl: data?._json.blog,
+                                bio: data?._json.bio,
+                                location: data?._json.location,
                             },
                         });
 
