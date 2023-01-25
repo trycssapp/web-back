@@ -12,7 +12,17 @@ export const editComponent = async (req: Request, res: APIJson) => {
             },
         });
         if (post) {
-            const { code, library, libraryVersion, css } = req.body;
+            const {
+                code,
+                library,
+                libraryVersion,
+                css,
+                title,
+                description,
+                animated,
+                responsive,
+                theme,
+            } = req.body;
             if (
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
@@ -21,6 +31,11 @@ export const editComponent = async (req: Request, res: APIJson) => {
                     data: {
                         css,
                         code,
+                        title,
+                        description,
+                        animated,
+                        responsive,
+                        theme,
                         library,
                         libraryVersion,
                     },
