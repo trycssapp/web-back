@@ -12,7 +12,17 @@ export const editComponent = async (req: Request, res: APIJson) => {
             },
         });
         if (post) {
-            const { code, library, libraryVersion, css } = req.body;
+            const {
+                code,
+                library,
+                libraryVersion,
+                css,
+                title,
+                description,
+                animated,
+                responsive,
+                theme,
+            } = req.body;
             if (
                 req.user &&
                 (req.user.role == 'ADMIN' || req.user?.id === post.authorId)
@@ -23,6 +33,11 @@ export const editComponent = async (req: Request, res: APIJson) => {
                         code: code ?? undefined,
                         library: library ?? undefined,
                         libraryVersion: libraryVersion ?? undefined,
+                        title: title ?? undefined,
+                        description: description ?? undefined,
+                        animated: animated ?? undefined,
+                        responsive: responsive ?? undefined,
+                        theme: theme ?? undefined,
                     },
                     where: {
                         id: postId,
