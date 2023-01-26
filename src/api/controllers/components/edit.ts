@@ -19,10 +19,10 @@ export const editComponent = async (req: Request, res: APIJson) => {
             ) {
                 const updated = await prisma.component.update({
                     data: {
-                        css,
-                        code,
-                        library,
-                        libraryVersion,
+                        css: css ?? undefined,
+                        code: code ?? undefined,
+                        library: library ?? undefined,
+                        libraryVersion: libraryVersion ?? undefined,
                     },
                     where: {
                         id: postId,
